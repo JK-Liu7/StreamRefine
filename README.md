@@ -138,8 +138,6 @@ Use Python 3.11 and install a compatible PyTorch build, then install the remaini
 python -m pip install -r requirements.txt
 ```
 
-StreamRefine uses the public [VidTok](https://github.com/microsoft/VidTok) implementation with the frozen non-causal KL tokenizer. Place the VidTok source and checkpoint according to the paths specified in the cache configuration.
-
 ### 1. Generate latent caches
 
 For BraTS 2024:
@@ -201,16 +199,3 @@ python ar/infer_sliding_window_streamrefine.py \
 ```
 
 For SynthRAD or AutoPET, use the same base and dataset configurations as during training.
-
-### 4. Check the release
-
-```bash
-python ar/validate_streamrefine.py --manifest
-python -B -m pytest ar/tests -q -p no:cacheprovider
-```
-
-## 📦 Repository Scope
-
-This anonymous release contains the StreamRefine implementation, configuration files, example manifests, tests, and documentation.
-
-Medical datasets, experiment outputs, trained StreamRefine checkpoints, and external tokenizer weights are **not included**. Generated caches and logs should remain local and excluded from version control.
