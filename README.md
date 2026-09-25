@@ -116,8 +116,6 @@ The experiments evaluate **translation quality**, **tumor/lesion ROI reconstruct
 
 ## 🗂️ Data Preparation
 
-Download the corresponding public datasets and prepare an input manifest following the examples in `examples/`.
-
 Each row should identify the case, modality, image path, and split. Modalities from the same case must use the same split and be spatially aligned.
 
 Before training, update the corresponding cache configuration under:
