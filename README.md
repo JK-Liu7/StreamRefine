@@ -4,6 +4,10 @@
 
 Our core idea is to treat learned stopping as both a **computation decision** and a **learning decision**. If training stops whenever the model proposes stopping, later refinement states are no longer observed or directly supervised. StreamRefine therefore occasionally continues beyond proposed stops, allowing the same trajectories to teach both **when to stop** and **how to refine further**.
 
+<p align="center">
+  <img src="assets/teaser.png" alt="StreamRefine teaser" width="800">
+</p>
+
 StreamRefine follows three main ideas:
 
 - 🌊 **Stream Refinement**, which models translation as an autoregressive stream of successive 3D refinement states
@@ -20,11 +24,9 @@ A naive learned-stopping strategy creates another problem: once a trajectory sto
 
 StreamRefine addresses this by **occasionally continuing after a proposed stop**. These continued trajectories reveal whether additional refinement would still be useful and simultaneously provide supervision for otherwise skipped later refinements.
 
-<!-- Add the framework figure manually, for example:
 <p align="center">
-  <img src="assets/framework.png" alt="StreamRefine Framework" width="900">
+  <img src="assets/teaser.png" alt="StreamRefine framework" width="800">
 </p>
--->
 
 ## 💡 Key Ideas
 
