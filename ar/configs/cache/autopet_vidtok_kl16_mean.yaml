@@ -1,0 +1,122 @@
+schema_version: streamrefine_cache_config_v2_anatomy_mask
+precompute:
+  name: streamrefine_autopet_vidtok_kl16_mean_overlap025_v1
+  device: cuda
+  precision: bf16
+  batch_size: 8
+  num_workers: 8
+  pin_memory: true
+  persistent_workers: true
+  seed: 2026
+  resume: true
+  overwrite: false
+  atomic_write: true
+  continue_on_error: true
+  verify_determinism: true
+  verify_decode: true
+  failure_log: failures.jsonl
+data:
+  dataset: autopet
+  split: train
+  manifest: examples/autopet_input.json
+  data_root: data/autopet
+  preprocessing_config: vidtok_rec/configs/vidtok_kl488_autopet_evaluate.yaml
+  splits_path: data/autopet/splits_final.json
+  fold: 0
+  train_datalist: data/manifests/autopet_train.json
+  val_datalist: data/manifests/autopet_val.json
+  modalities:
+  - ct
+  - pet
+  require_common_grid: true
+  allow_missing_modalities: false
+  orientation: RAS
+  image_threshold: -0.99
+  normalization:
+    type: modality_specific
+    percentile_low: 0.5
+    percentile_high: 99.5
+  input_already_normalized: false
+  anatomy_mask_policy: autopet_ct_body_shared_v1
+  normalization_adapter: same_as_vidtok_medical_finetune
+  preserve_pet_suv_inverse_metadata: true
+  padding_value_from_preprocessing: true
+  save_nifti_metadata: true
+patching:
+  patch_size_hwd:
+  - 256
+  - 256
+  - 16
+  overlap: 0.25
+  stride_hwd:
+  - 192
+  - 192
+  - 12
+  compression_hwd:
+  - 8
+  - 8
+  - 4
+  latent_tile_dhw:
+  - 4
+  - 32
+  - 32
+  include_last_patch: true
+  pad_policy: coverage_pad
+  pad_mode: coverage
+  padding_value: -1.0
+  minimum_image_shape_hwd:
+  - 96
+  - 96
+  - 96
+  stitch_mode: weighted_posterior_mean_blending
+  importance_mode: hann
+  importance_floor: 0.001
+  accumulation_dtype: float32
+vidtok:
+  repo_root: external/VidTok
+  config_path: external/VidTok/configs/vidtok_kl_noncausal_488_16chn.yaml
+  ckpt_path: checkpoints/vidtok_kl_noncausal_488_16chn.ckpt
+  tokenizer: kl
+  causal: false
+  latent_channels: 16
+  raw_moment_channels: 32
+  posterior_mode: mean
+  save_logvar: false
+  input_range:
+  - -1.0
+  - 1.0
+  input_range_source: same_as_vidtok_medical_finetune
+  repeat_gray_to_rgb: true
+  verify_decode_subset: true
+cache:
+  output_dir: result/streamrefine_latents/autopet
+  manifest_name: cache_manifest_{split}.jsonl
+  cache_granularity: per_modality
+  path_template: '{group_id}/{modality}.pt'
+  latent_key: latent_mu
+  latent_layout: C,D,H,W
+  storage_dtype: float16
+  save_valid_mask_latent: true
+  save_valid_mask_soft: true
+  save_patch_index_table: true
+  save_tokenizer_hash: true
+  save_anatomy_mask_latent_hard: true
+  cache_version: streamrefine_kl_mean_v2_anatomy_mask
+streamrefine_loader:
+  image_crop_hwd:
+  - 96
+  - 96
+  - 96
+  latent_crop_dhw:
+  - 24
+  - 12
+  - 12
+  min_valid_ratio: 0.85
+  max_sampling_tries: 100
+  shared_source_target_coordinates: true
+  return_crop_origin_dhw: true
+  normalize_with_training_latent_stats: true
+  use_valid_mask_loss: true
+translation_pairs:
+- - ct
+  - pet

@@ -1,0 +1,16 @@
+method:
+  mode: anatomy_aware
+  sentinel_probability: 0.2
+  stop_threshold: 0.0
+  policy_warmup_steps: 10000
+benefit:
+  anatomy_metric: pir
+  lambda_anatomy: 1.0
+  lambda_compute: 0.01
+  calibration_required_for_anatomy: true
+  auto_calibration:
+    enabled: true
+    max_cases: 32
+    head_warmup_steps: 1000
+  fixed_horizon_trajectory_contract_fingerprint: ''
+  calibration_path: ''

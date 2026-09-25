@@ -1,0 +1,15 @@
+# Install the matching PyTorch / torchvision build separately.
+monai==1.4.0
+numpy==1.26.4
+scipy==1.16.2
+PyYAML==6.0.2
+omegaconf==2.3.0
+nibabel==5.3.2
+tqdm==4.67.1
+Pillow==11.3.0
+lightning==2.6.4
+einops==0.8.1
+safetensors==0.6.2
+rich==14.1.0
+beartype==0.22.9
+lpips==0.1.4

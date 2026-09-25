@@ -1,0 +1,21 @@
+data:
+  dataset: brats24
+  pair: t2w_to_t2f
+  supported_pairs:
+  - t2w_to_t2f
+  - t1c_to_t1n
+  - t2f_to_t2w
+  - t1n_to_t2w
+  - t1n_to_t1c
+  train_manifest: result/streamrefine_latents/brats24/pair_manifest_train.jsonl
+  val_manifest: result/streamrefine_latents/brats24/pair_manifest_val.jsonl
+  test_manifest: ''
+  path_remap: []
+  anatomy_mask_policy: brats24_nonzero_union_v1
+  preprocessing_config: ar/configs/cache/brats24_vidtok_kl16_mean.yaml
+latent:
+  stats_path: result/streamrefine_latents/brats24/latent_stats_train.json
+vidtok:
+  repo: external/VidTok
+  config: external/VidTok/configs/vidtok_kl_noncausal_488_16chn.yaml
+  checkpoint: checkpoints/vidtok_kl_noncausal_488_16chn.ckpt

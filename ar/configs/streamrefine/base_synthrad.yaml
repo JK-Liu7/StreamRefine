@@ -1,0 +1,107 @@
+project:
+  root: .
+  output_root: result/streamrefine
+  experiment: streamrefine_flow
+persistent_cache:
+  root: result/persistent_cache
+  namespace: streamrefine_pair_v3_anatomy_mask
+latent:
+  cache_schema: streamrefine_kl_mean_v2_anatomy_mask
+  channels: 16
+  layout: C,D,H,W
+  crop_size_dhw:
+  - 24
+  - 24
+  - 24
+  image_crop_size_dhw:
+  - 96
+  - 192
+  - 192
+model:
+  in_channels: 16
+  out_channels: 16
+  hidden_size: 384
+  depth: 8
+  num_heads: 8
+  mlp_ratio: 4.0
+  dropout: 0.0
+  patch_size_dhw:
+  - 2
+  - 2
+  - 2
+  rope_base: 10000.0
+  max_refinement_steps: 4
+  gradient_checkpointing: false
+  detach_benefit_input: true
+flow:
+  objective: rectified_flow
+  prediction: velocity
+  train_time_distribution: uniform
+  inference_solver: euler
+rollout:
+  k_max: 4
+  inner_steps: 4
+  refinement_start: previous_state
+  history_detach: true
+  sync_flow_time_across_ranks: true
+benefit:
+  translation_metric: latent_mae
+  anatomy_metric: pir
+vidtok:
+  decode_batch_size: 1
+  decode_window_dhw:
+  - 8
+  - 32
+  - 32
+  decode_overlap: 0.25
+losses:
+  latent_l1_weight: 0.2
+train:
+  precision: bf16
+  batch_size_per_gpu: 8
+  grad_accumulation: 1
+  learning_rate: 2.0e-05
+  weight_decay: 0.0
+  max_steps: 100000
+  warmup_steps: 2000
+  gradient_clip_norm: 2.0
+  ema: true
+  ema_decay: 0.9995
+  init_use_ema: true
+  auto_resume: true
+  checkpoint_every: 4000
+  validate_every: 4000
+  log_every: 200
+  seed: 3407
+validation:
+  max_batches: 4
+  max_cases: 16
+  fixed_k: 4
+  selection_metric: adaptive_utility
+  selection_direction: min
+  oracle_tolerance: 1e-8
+  compute_anatomy: true
+  threshold_sweep:
+  - -0.05
+  - 0.0
+  - 0.05
+diagnostics:
+  trajectory:
+    enabled: true
+inference:
+  window_size_dhw:
+  - 24
+  - 12
+  - 12
+  overlap: 0.25
+  blend_mode: gaussian
+  score_aggregation: valid_weighted_mean
+  use_ema: true
+  seed: 3407
+runtime:
+  device: cuda
+  deterministic: false
+  distributed_timeout_minutes: 120.0
+artifacts:
+  save_mid_slices: true
+  save_all_states: true

@@ -1,0 +1,17 @@
+data:
+  dataset: autopet
+  pair: ct_to_pet
+  supported_pairs:
+  - ct_to_pet
+  train_manifest: result/streamrefine_latents/autopet/pair_manifest_train.jsonl
+  val_manifest: result/streamrefine_latents/autopet/pair_manifest_val.jsonl
+  test_manifest: ''
+  path_remap: []
+  anatomy_mask_policy: autopet_ct_body_shared_v1
+  preprocessing_config: ar/configs/cache/autopet_vidtok_kl16_mean.yaml
+latent:
+  stats_path: result/streamrefine_latents/autopet/latent_stats_train.json
+vidtok:
+  repo: external/VidTok
+  config: external/VidTok/configs/vidtok_kl_noncausal_488_16chn.yaml
+  checkpoint: checkpoints/vidtok_kl_noncausal_488_16chn.ckpt
