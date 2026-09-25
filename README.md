@@ -25,7 +25,7 @@ A naive learned-stopping strategy creates another problem: once a trajectory sto
 StreamRefine addresses this by **occasionally continuing after a proposed stop**. These continued trajectories reveal whether additional refinement would still be useful and simultaneously provide supervision for otherwise skipped later refinements.
 
 <p align="center">
-  <img src="assets/teaser.png" alt="StreamRefine framework" width="800">
+  <img src="assets/framework.png" alt="StreamRefine framework" width="800">
 </p>
 
 ## 💡 Key Ideas
